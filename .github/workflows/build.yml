@@ -28,4 +28,4 @@ jobs:
         run: echo "::set-output name=release_version::${GITHUB_REF/refs\/tags\//}"
         
       - name: Build ISO
-        run: sudo ./tools/create-chipsec.sh -d /tmp/Chipsec-Check-${{ steps.set_version.outputs.release_version }}.iso -c ${{ env.CHIPSEC_TAG }}
+        run: sudo ./tools/create-chipsec.sh -d ./Chipsec-Check-${{ steps.set_version.outputs.release_version }}.iso -c ${{ env.CHIPSEC_TAG }}
