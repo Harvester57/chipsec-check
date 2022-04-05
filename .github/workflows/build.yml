@@ -19,7 +19,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get full-upgrade -y
-          sudo apt install sbsign efitools dosfstools git -y --no-install-recommends
+          sudo apt-get install sbsigntool efitools dosfstools git -y --no-install-recommends
 
       - name: Checkout repository  
         uses: actions/checkout@v3
