@@ -42,12 +42,12 @@ check_requirements () {
 		echo "sbsign not found, please install the sbsigntool package" >&2
 		ret=1
 	fi
-	if [ ! -f /usr/lib/efitools/x86_64-linux-gnu/KeyTool.efi ];
+	if [ ! -f /usr/share/efitools/efi/KeyTool.efi ];
 	then
 		echo "KeyTool.efi not found, please install the efitools package" >&2
 		ret=1
 	fi
-	if [ ! -f /usr/lib/efitools/x86_64-linux-gnu/HashTool.efi ];
+	if [ ! -f /usr/share/efitools/efi/HashTool.efi ];
 	then
 		echo "HashTool.efi not found, please install the efitools package" >&2
 		ret=1
@@ -247,9 +247,9 @@ install_keytool () {
 	local HEFI="${mount_point}/boot/EFI/keytool/HelloWorld.EFI"
 
 	mkdir -p "${KEFI%/*}"
-	sbsign --key "$keypath"/DB.key --cert "$keypath"/DB.crt --output "${KEFI}" /usr/lib/efitools/x86_64-linux-gnu/KeyTool.efi
+	sbsign --key "$keypath"/DB.key --cert "$keypath"/DB.crt --output "${KEFI}" /usr/share/efitools/efi/KeyTool.efi
 
-	cp /usr/lib/efitools/x86_64-linux-gnu/HashTool.efi "${HEFI}"
+	cp /usr/share/efitools/efi/HashTool.efi "${HEFI}"
 }
 
 
