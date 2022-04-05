@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install sbsigntool efitools dosfstools git -y --no-install-recommends
+          sudo apt-get install efitools -y --no-install-recommends
 
       - name: Checkout repository  
         uses: actions/checkout@v3
