@@ -139,12 +139,10 @@ exit_if_no () {
 part_disk () {
 	local disk=${1}
 
-	sfdisk -q "${disk}" << EOF
-label: gpt
-size=100MiB,type=uefi,name=esp,bootable
-size=1600MiB,type=linux,name=chipsec
-type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7,name=data
-EOF
+	echo 'label: gpt' | sfdisk "${disk}"
+	echo 'size=100MiB,type=uefi,name=esp,bootable' | sfdisk "${disk}"
+	echo 'size=1600MiB,type=linux,name=chipsec' | sfdisk "${disk}"
+	echo 'type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7,name=data' | sfdisk "${disk}"
 
 	partprobe "${disk}"
 	# Formatting an external device sometimes fails because the partition
