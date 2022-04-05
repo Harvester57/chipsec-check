@@ -312,9 +312,6 @@ main () {
 		exit 1
 	fi
 
-	printf "Use %s? It will be completely erased (Y/n) " "${arg}"
-	exit_if_no "$(ask_confirm "Y")"
-
 	if [ -b "${arg}" ]; #block device, just use it directly
 	then
 		disk=${arg}
