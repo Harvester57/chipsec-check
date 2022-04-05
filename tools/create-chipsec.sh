@@ -140,11 +140,21 @@ part_disk () {
 	local disk=${1}
 
 	echo 'label: gpt' | sfdisk "${disk}"
-	echo 'size=100MiB,type=uefi,name=esp,bootable' | sfdisk "${disk}"
-	echo 'size=1600MiB,type=linux,name=chipsec' | sfdisk "${disk}"
-	echo 'type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7,name=data' | sfdisk "${disk}"
-
+	fdisk "${disk}"
 	partprobe "${disk}"
+	
+	echo 'size=100MiB,type=uefi,name=esp,bootable' | sfdisk "${disk}"
+	fdisk "${disk}"
+	partprobe "${disk}"
+	
+	echo 'size=1600MiB,type=linux,name=chipsec' | sfdisk "${disk}"
+	fdisk "${disk}"
+	partprobe "${disk}"
+	
+	echo 'type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7,name=data' | sfdisk "${disk}"
+	fdisk "${disk}"
+	partprobe "${disk}"
+
 	# Formatting an external device sometimes fails because the partition
 	# table hasn't propagated (despite partprobe).
 	# Printing the partition table seems to work around it.
