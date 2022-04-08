@@ -2,6 +2,8 @@ name: CI
 
 on:
   push:
+    branches:
+    - main
     tags:
       - '*'
   workflow_dispatch:
@@ -12,13 +14,13 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install efitools -y --no-install-recommends
+          sudo apt-get install fdisk efitools -y --no-install-recommends
 
       - name: Checkout repository  
         uses: actions/checkout@v3
