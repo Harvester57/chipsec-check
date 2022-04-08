@@ -139,16 +139,13 @@ exit_if_no () {
 part_disk () {
 	local disk=${1}
 
-	echo 'label: gpt' | sfdisk "${disk}"
-	partprobe "${disk}"
+	echo -e 'label: gpt' | sfdisk "${disk}"
 	
 	echo -e ',100M,U\n,,L' | sfdisk "${disk}"
-	partprobe "${disk}"
 	
-	echo ',1600M,L\n,' | sfdisk "${disk}"
-	partprobe "${disk}"
+	echo -e ',1600M,L\n,' | sfdisk "${disk}"
 	
-	echo ',,type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7,' | sfdisk "${disk}"
+	echo -e ',,type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7,' | sfdisk "${disk}"
 	partprobe "${disk}"
 
 	# Formatting an external device sometimes fails because the partition
