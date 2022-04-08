@@ -142,13 +142,13 @@ part_disk () {
 	echo 'label: gpt' | sfdisk "${disk}"
 	partprobe "${disk}"
 	
-	echo -e ',100M,U\n,,L' | sfdisk "${disk}"
+	echo -e ',100M,U\n,*,' | sfdisk "${disk}"
 	partprobe "${disk}"
 	
-	echo 'size=1600MiB,type=linux,name=chipsec' | sfdisk "${disk}"
+	echo ',1600M,L\n,name=chipsec' | sfdisk "${disk}"
 	partprobe "${disk}"
 	
-	echo 'type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7,name=data' | sfdisk "${disk}"
+	echo ',,type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7,name=data' | sfdisk "${disk}"
 	partprobe "${disk}"
 
 	# Formatting an external device sometimes fails because the partition
