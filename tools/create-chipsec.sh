@@ -142,7 +142,7 @@ part_disk () {
 	echo 'label: gpt' | sfdisk "${disk}"
 	partprobe "${disk}"
 	
-	echo 'size=100MiB,type=uefi,name=esp,bootable' | sfdisk "${disk}"
+	echo -e ',100M,U\n,,L' | sfdisk "${disk}"
 	partprobe "${disk}"
 	
 	echo 'size=1600MiB,type=linux,name=chipsec' | sfdisk "${disk}"
