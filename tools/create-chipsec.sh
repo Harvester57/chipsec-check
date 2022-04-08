@@ -142,7 +142,7 @@ part_disk () {
 	echo 'label: gpt' | sfdisk "${disk}"
 	partprobe "${disk}"
 	
-	echo -e ',100M,U\n,*,L' | sfdisk "${disk}"
+	echo -e ',100M,U\n,,L' | sfdisk "${disk}"
 	partprobe "${disk}"
 	
 	echo ',1600M,L\n,name=chipsec' | sfdisk "${disk}"
