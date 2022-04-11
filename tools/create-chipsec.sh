@@ -138,15 +138,27 @@ exit_if_no () {
 
 part_disk () {
 	local disk=${1}
+	echo "Step: inside part_disk"
+	echo "Using ${disk} as output"
 
+	echo "Step: GPT label"
 	echo -e 'label: gpt' | sfdisk "${disk}"
 	
+	echo "Step: EFI partition"
 	echo -e ',100M,U\n,,L' | sfdisk "${disk}"
+	echo "Step: EFI partition OK"
 	
+	echo "Step: Linux partition"
 	echo -e ',1600M,L\n,' | sfdisk "${disk}"
+	echo "Step: Linux partition OK"
 	
+	echo "Step: data partition"
 	echo -e ',,type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7,' | sfdisk "${disk}"
+	echo "Step: data partition OK"
+	
+	echo "Step: partprobe"
 	partprobe "${disk}"
+	echo "Step: partprobe OK"
 
 	# Formatting an external device sometimes fails because the partition
 	# table hasn't propagated (despite partprobe).
@@ -278,6 +290,7 @@ trap_cleanup () {
 }
 
 main () {
+	echo "Step: check requirements"
 	check_requirements || exit 1
 	trap trap_cleanup ERR
 	while getopts "c:d:e:k:r:" opt; do
@@ -318,7 +331,9 @@ main () {
 		disk=${arg}
 		sep=""
 	else
+		echo "Step: truncate"
 		truncate -s 2GB "${arg}"
+		echo "Step: losetup"
 		disk=$(losetup --find --show "$arg")
 		sep="p"
 	fi
@@ -328,8 +343,10 @@ main () {
 		keypath="$SRCDIR"/ca
 	fi
 
+	echo "Step: mount point"
 	mount_point=$(mktemp -d -p "" efiliveXXX)
 
+	echo "Step: partitions"
 	part_disk "${disk}"
 
 	boot="${disk}${sep}1"
