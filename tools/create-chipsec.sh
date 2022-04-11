@@ -141,20 +141,8 @@ part_disk () {
 	echo "Step: inside part_disk"
 	echo "Using ${disk} as output"
 
-	echo "Step: GPT label"
-	echo -e 'label: gpt' | sfdisk "${disk}"
-	
-	echo "Step: EFI partition"
-	echo -e ',100M,U\n,,L' | sfdisk "${disk}"
-	echo "Step: EFI partition OK"
-	
-	echo "Step: Linux partition"
-	echo -e '100M,1600M,L\n,' | sfdisk "${disk}"
-	echo "Step: Linux partition OK"
-	
-	echo "Step: data partition"
-	echo -e '1700M,,86,' | sfdisk -a "${disk}"
-	echo "Step: data partition OK"
+	echo "Step: apply partitions"
+	sfdisk ${disk} < partitions.txt
 	
 	echo "Step: partprobe"
 	partprobe "${disk}"
