@@ -140,11 +140,9 @@ part_disk () {
 	local disk=${1}
 	echo "Step: inside part_disk"
 	echo "Using ${disk} as output"
-	
-	ls
 
 	echo "Step: apply partitions"
-	sfdisk ${disk} < partitions.txt
+	sfdisk ${disk} < ./tools/partitions.txt
 	
 	echo "Step: partprobe"
 	partprobe "${disk}"
