@@ -149,11 +149,11 @@ part_disk () {
 	echo "Step: EFI partition OK"
 	
 	echo "Step: Linux partition"
-	echo -e ',1600M,L\n,' | sfdisk -a "${disk}"
+	echo -e '100M,1600M,L\n,' | sfdisk "${disk}"
 	echo "Step: Linux partition OK"
 	
 	echo "Step: data partition"
-	echo -e ',,86,' | sfdisk -a "${disk}"
+	echo -e '1700M,,86,' | sfdisk -a "${disk}"
 	echo "Step: data partition OK"
 	
 	echo "Step: partprobe"
