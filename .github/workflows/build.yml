@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install fdisk efitools uuid -y --no-install-recommends
+          sudo apt-get install fdisk efitools uuid debootstrap -y --no-install-recommends
 
       - name: Checkout repository  
         uses: actions/checkout@v3
