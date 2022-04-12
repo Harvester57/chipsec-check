@@ -5,4 +5,4 @@ unit: sectors
 
 start=        2048, size=        100M, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, uuid=C819A724-0D70-7248-BB3A-C56436AA8360, name="esp"
 start=      206848, size=       1500M, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, uuid=7B315769-DAEA-A743-85CB-DB5AA41412A6, name="chipsec"
-start=   3 280 895, size=         15M, type=c, uuid=D6B4C91F-8BC1-264C-A571-FB18574BBB91, name="data"
+start=   3 280 895, size=         15M, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, uuid=D6B4C91F-8BC1-264C-A571-FB18574BBB91, name="data"
