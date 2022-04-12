@@ -198,15 +198,15 @@ install_debian () {
 	mount sysfs "${mount_point}"/sys -t sysfs
 	mount -o bind /dev "${mount_point}"/dev
 
-	do_chroot apt -y install systemd linux-image-amd64 grub-efi iproute2
-	do_chroot apt -y install build-essential linux-headers-amd64
-	do_chroot apt -y install python3 python3-dev python3-setuptools
-	do_chroot apt -y install vim-tiny sed nasm pciutils fwupd lshw usbutils
-	do_chroot apt -y install tpm2-tools cpuid msr-tools dmidecode
+	do_chroot apt-get -y install systemd linux-image-amd64 grub-efi iproute2 --no-install-recommends
+	do_chroot apt-get -y install build-essential linux-headers-amd64 --no-install-recommends
+	do_chroot apt-get -y install python3 python3-dev python3-setuptools --no-install-recommends
+	do_chroot apt-get -y install vim-tiny sed nasm pciutils fwupd lshw usbutils --no-install-recommends
+	do_chroot apt-get -y install tpm2-tools cpuid msr-tools dmidecode --no-install-recommends
 	# Skip dpkg question about console-data configuration, we only care
 	# about having a database for loadkeys.
 	do_chroot sh -c "echo 'console-common	console-data/keymap/policy	select	Keep kernel keymap' | debconf-set-selections"
-	do_chroot apt -y install kbd console-data
+	do_chroot apt-get -y install kbd console-data --no-install-recommends
 
 	if [ -n "${extra_packages}" ];
 	then
