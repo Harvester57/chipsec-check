@@ -2,8 +2,6 @@ name: CI
 
 on:
   push:
-    branches:
-    - master
     tags:
       - '*'
   workflow_dispatch:
@@ -33,4 +31,18 @@ jobs:
         run: sudo ./tools/gen-keys.sh 
         
       - name: Build ISO
-        run: sudo ./tools/create-chipsec.sh -d /tmp/output.iso -c ${{ env.CHIPSEC_TAG }}
+        run: sudo ./tools/create-chipsec.sh -d /tmp/Chipsec-Check-${{ steps.set_version.outputs.release_version }}.iso -c ${{ env.CHIPSEC_TAG }}
+        
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ISOs
+          path: /tmp/*.iso
+          
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          files: |
+            /tmp/*.iso
