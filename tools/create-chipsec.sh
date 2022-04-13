@@ -366,9 +366,9 @@ main () {
 	fi
 
 	# Sign the boot entries with our own custom SecureBoot keys
-	sign_grub
-	sign_shim_boot
-	sign_kernel
+	# sign_grub
+	# sign_shim_boot
+	# sign_kernel
 
 	echo -e "\n\nChipsec key built on $(date -R)" >> "${mount_point}"/etc/motd
 
