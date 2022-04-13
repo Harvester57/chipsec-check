@@ -23,15 +23,11 @@ jobs:
       - name: Checkout repository  
         uses: actions/checkout@v3
         
-      - name: Set version
-        id: set_version
-        run: echo "::set-output name=release_version::${GITHUB_REF/refs\/tags\//}"
-        
       - name: Generate keys
         run: sudo ./tools/gen-keys.sh 
         
       - name: Build ISO
-        run: sudo ./tools/create-chipsec.sh -d /tmp/Chipsec-Check-${{ steps.set_version.outputs.release_version }}.iso -c ${{ env.CHIPSEC_TAG }}
+        run: sudo ./tools/create-chipsec.sh -d /tmp/Chipsec-Check-${{ github.ref_name }}.iso -c ${{ env.CHIPSEC_TAG }}
         
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
