@@ -8,7 +8,7 @@ on:
 
 env:
   # https://github.com/chipsec/chipsec/tags
-  CHIPSEC_TAG: 1.8.5
+  CHIPSEC_TAG: 1.8.6
 
 jobs:
   build:
