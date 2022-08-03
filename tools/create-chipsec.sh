@@ -320,7 +320,7 @@ main () {
 		sep=""
 	else
 		echo "Step: truncate"
-		truncate -s 2GB "${arg}"
+		truncate -s 4GB "${arg}"
 		echo "Step: losetup"
 		disk=$(losetup --find --show "$arg")
 		sep="p"
