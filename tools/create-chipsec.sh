@@ -248,9 +248,9 @@ install_keytool () {
 	local HEFI="${mount_point}/boot/EFI/keytool/HelloWorld.EFI"
 
 	mkdir -p "${KEFI%/*}"
-	sbsign --key "$keypath"/DB.key --cert "$keypath"/DB.crt --output "${KEFI}" /usr/share/efitools/efi/KeyTool.efi
+	sbsign --key "$keypath"/DB.key --cert "$keypath"/DB.crt --output "${KEFI}" /usr/lib/efitools/x86_64-linux-gnu/KeyTool.efi
 
-	cp /usr/share/efitools/efi/HashTool.efi "${HEFI}"
+	cp /usr/lib/efitools/x86_64-linux-gnu/HashTool.efi "${HEFI}"
 }
 
 
