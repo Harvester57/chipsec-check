@@ -42,12 +42,12 @@ check_requirements () {
 		echo "sbsign not found, please install the sbsigntool package" >&2
 		ret=1
 	fi
-	if [ ! -f /usr/share/efitools/efi/KeyTool.efi ];
+	if [ ! -f /usr/lib/efitools/x86_64-linux-gnu/KeyTool.efi ];
 	then
 		echo "KeyTool.efi not found, please install the efitools package" >&2
 		ret=1
 	fi
-	if [ ! -f /usr/share/efitools/efi/HashTool.efi ];
+	if [ ! -f /usr/lib/efitools/x86_64-linux-gnu/HashTool.efi ];
 	then
 		echo "HashTool.efi not found, please install the efitools package" >&2
 		ret=1
