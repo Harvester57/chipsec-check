@@ -21,7 +21,7 @@ jobs:
           sudo apt-get install fdisk efitools uuid debootstrap -y --no-install-recommends
 
       - name: Checkout repository  
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       - name: Generate keys
         run: sudo ./tools/gen-keys.sh 
