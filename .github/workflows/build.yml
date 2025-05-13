@@ -30,7 +30,7 @@ jobs:
         run: sudo ./tools/create-chipsec.sh -d /tmp/Chipsec-Check-${{ github.ref_name }}.iso -c ${{ env.CHIPSEC_TAG }}
         
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ISOs
           path: /tmp/*.iso
