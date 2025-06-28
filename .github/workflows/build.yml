@@ -10,18 +10,28 @@ env:
   # https://github.com/chipsec/chipsec/tags
   CHIPSEC_TAG: 1.9.1
 
+permissions:
+  contents: read
+
 jobs:
   build:
+    permissions:
+      contents: write  # for softprops/action-gh-release to create GitHub release
     runs-on: ubuntu-latest
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@002fdce3c6a235733a90a27c80493a3241e56863 # v2.12.1
+        with:
+          egress-policy: audit
+
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install fdisk efitools uuid debootstrap -y --no-install-recommends
 
       - name: Checkout repository  
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
         
       - name: Generate keys
         run: sudo ./tools/gen-keys.sh 
@@ -30,13 +40,13 @@ jobs:
         run: sudo ./tools/create-chipsec.sh -d /tmp/Chipsec-Check-${{ github.ref_name }}.iso -c ${{ env.CHIPSEC_TAG }}
         
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@ff15f0306b3f739f7b6fd43fb5d26cd321bd4de5 # v3.2.1
         with:
           name: ISOs
           path: /tmp/*.iso
           
       - name: Create release
-        uses: softprops/action-gh-release@v1
+        uses: step-security/action-gh-release@2677a32b1ab8b24324ede3be9da4e1d8c3f686ee # v2.3.2
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
