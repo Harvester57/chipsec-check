@@ -6,19 +6,6 @@ set -e
 
 NAME="chipsec-sec secureboot test"
 
-# efitools prior 1.9.2 has a bug preventing PK insertion in somes BIOSes
-# See https://forums.lenovo.com/t5/ThinkPad-11e-Windows-13-E-and/Cannot-install-custom-secure-boot-PK-platform-key/td-p/4318378
-# This bug manifests in sign-efi-sig-list so check that if possible
-if [ -x /usr/bin/dpkg ];
-then
-	efitools_vers=$(sign-efi-sig-list --version | awk '{ print $2 }')
-	if dpkg --compare-versions "$efitools_vers" lt "1.9.2";
-	then
-		echo "efitools version ($efitools_vers) is too old, please upgrade to efitools >= 1.9.2 to avoid potential bugs when inserting PK" >&2
-		exit 1
-	fi
-fi
-
 if ! type uuid &> /dev/null;
 then
 	echo "uuid binary not found in PATH. Please install the uuid binary (apt install uuid on Debian and derivatives)" >&2

@@ -138,6 +138,8 @@ exit_if_no () {
 
 part_disk () {
 	local disk=${1}
+	echo "Step: inside part_disk"
+	echo "Using ${disk} as output"
 
 	sfdisk -q "${disk}" << EOF
 label: gpt
@@ -147,6 +149,8 @@ type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7,name=data
 EOF
 
 	partprobe "${disk}"
+	echo "Step: partprobe OK"
+
 	# Formatting an external device sometimes fails because the partition
 	# table hasn't propagated (despite partprobe).
 	# Printing the partition table seems to work around it.
@@ -197,15 +201,15 @@ install_debian () {
 	mount sysfs "${mount_point}"/sys -t sysfs
 	mount -o bind /dev "${mount_point}"/dev
 
-	do_chroot apt -y install systemd linux-image-amd64 grub-efi iproute2
-	do_chroot apt -y install build-essential linux-headers-amd64 pahole
-	do_chroot apt -y install python3 python3-dev python3-setuptools
-	do_chroot apt -y install vim-tiny sed nasm pciutils fwupd lshw usbutils
-	do_chroot apt -y install tpm2-tools cpuid msr-tools dmidecode
+	do_chroot apt-get -y install systemd linux-image-amd64 grub-efi iproute2 --no-install-recommends
+	do_chroot apt-get -y install build-essential linux-headers-amd64 pahole --no-install-recommends
+	do_chroot apt-get -y install python3 python3-dev python3-setuptools --no-install-recommends
+	do_chroot apt-get -y install vim-tiny sed nasm pciutils fwupd lshw usbutils --no-install-recommends
+	do_chroot apt-get -y install tpm2-tools cpuid msr-tools dmidecode --no-install-recommends
 	# Skip dpkg question about console-data configuration, we only care
 	# about having a database for loadkeys.
 	do_chroot sh -c "echo 'console-common	console-data/keymap/policy	select	Keep kernel keymap' | debconf-set-selections"
-	do_chroot apt -y install kbd console-data
+	do_chroot apt-get -y install kbd console-data --no-install-recommends
 
 	if [ -n "${extra_packages}" ];
 	then
@@ -225,7 +229,7 @@ install_debian () {
 	do_chroot grub-install --target=x86_64-efi --efi-directory /boot --no-nvram
 	do_chroot mkdir -p /boot/EFI/Boot
 	do_chroot grub-mkconfig -o /boot/grub/grub.cfg
-	do_chroot rm /boot/EFI/debian/BOOTX64.CSV
+	# do_chroot rm /boot/EFI/debian/BOOTX64.CSV
 
 	do_chroot passwd -d root
 }
@@ -277,6 +281,7 @@ trap_cleanup () {
 }
 
 main () {
+	echo "Step: check requirements"
 	check_requirements || exit 1
 	trap trap_cleanup ERR
 	while getopts "c:d:e:k:r:" opt; do
@@ -312,15 +317,14 @@ main () {
 		exit 1
 	fi
 
-	printf "Use %s? It will be completely erased (Y/n) " "${arg}"
-	exit_if_no "$(ask_confirm "Y")"
-
 	if [ -b "${arg}" ]; #block device, just use it directly
 	then
 		disk=${arg}
 		sep=""
 	else
+		echo "Step: truncate"
 		truncate -s 4GB "${arg}"
+		echo "Step: losetup"
 		disk=$(losetup --find --show "$arg")
 		sep="p"
 	fi
@@ -330,8 +334,10 @@ main () {
 		keypath="$SRCDIR"/ca
 	fi
 
+	echo "Step: mount point"
 	mount_point=$(mktemp -d -p "" efiliveXXX)
 
+	echo "Step: partitions"
 	part_disk "${disk}"
 
 	boot="${disk}${sep}1"
@@ -363,9 +369,9 @@ main () {
 	fi
 
 	# Sign the boot entries with our own custom SecureBoot keys
-	sign_grub
-	sign_shim_boot
-	sign_kernel
+	# sign_grub
+	# sign_shim_boot
+	# sign_kernel
 
 	echo -e "\n\nChipsec key built on $(date -R)" >> "${mount_point}"/etc/motd
 
