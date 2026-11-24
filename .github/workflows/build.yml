@@ -46,7 +46,7 @@ jobs:
           path: /tmp/*.iso
           
       - name: Create release
-        uses: step-security/action-gh-release@d45511d7589f080cf54961ff056b9705a74fd160 # v2.5.0
+        uses: step-security/action-gh-release@44319d37c8b7966bf07f89f0cbf63408141446df # v3.0.3
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
